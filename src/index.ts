@@ -1,7 +1,7 @@
 import type { Plugin, IAgentRuntime } from "@elizaos/core";
 import { logger, EventType } from "@elizaos/core";
 // Placeholder: Import the actual handler function once created
-  import { handleDiscordMessage } from "./handlers/handleDiscordMessage"; // <--- Placeholder Import
+import { handleDiscordMessage } from "./handlers/messageHandler"; // <--- Placeholder Import
 import { z } from "zod";
 
 /**
