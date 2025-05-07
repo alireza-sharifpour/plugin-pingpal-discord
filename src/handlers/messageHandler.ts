@@ -128,7 +128,6 @@ async function performDiscordMentionAnalysis(
   let guildIdForContext: string | undefined = guildIdFromUrl;
   let channelIdForContext: string | undefined = channelIdFromUrl; // Actual Discord Channel Snowflake ID
   let serverName = "Unknown Server";
-  let channelName = "Unknown Channel";
 
   // Attempt to get more precise context from runtime.getRoom()
   try {
@@ -147,13 +146,48 @@ async function performDiscordMentionAnalysis(
 
       // Attempt to get human-readable names
       // channelName = await getChannelName(runtime, room);
-      console.log("channelName", channelName);
-      // channelName = room.name || channelName; // `room.name` is standard for Eliza Room objects
-      // Server name might be in room metadata if the Discord plugin populates it
-      // serverName =
-      //   room.metadata?.discord?.guildName ||
-      //   room.metadata?.guildName ||
-      //   serverName;
+      console.log("channelName", channelIdForContext);
+      // Attempt to get server name from World if worldId is available
+      if (room.worldId) {
+        try {
+          const world = await runtime.getWorld(room.worldId);
+          console.log("myWorld", world);
+          if (world && world.name) {
+            serverName = world.name;
+            logger.debug(
+              { serverNameFromWorld: world.name },
+              "[PingPal Discord] Fetched server name from world."
+            );
+          } else {
+            // Fallback to metadata if world or world.name is not found
+            serverName =
+              (room.metadata as any)?.discord?.guildName ||
+              (room.metadata as any)?.guildName ||
+              serverName;
+          }
+        } catch (worldError) {
+          logger.warn(
+            {
+              error: worldError,
+              agentId: runtime.agentId,
+              elizaRoomId: discordMessage.roomId,
+              worldId: room.worldId,
+            },
+            "[PingPal Discord] Could not fetch world details for server name. Using fallbacks."
+          );
+          // Ensure fallback to existing metadata logic if world fetch fails
+          serverName =
+            (room.metadata as any)?.discord?.guildName ||
+            (room.metadata as any)?.guildName ||
+            serverName;
+        }
+      } else {
+        // If no worldId, use existing metadata logic for server name
+        serverName =
+          (room.metadata as any)?.discord?.guildName ||
+          (room.metadata as any)?.guildName ||
+          serverName;
+      }
     }
   } catch (e) {
     logger.warn(
@@ -223,7 +257,7 @@ async function performDiscordMentionAnalysis(
     );
   }
 
-  const llmPrompt = `You are an assistant helping filter Discord server messages. Analyze the following message sent by '${senderName}' in the channel '#${channelName}' on server '${serverName}'. Determine if this message requires the urgent attention or action of the user mentioned ('${targetUsernameOrIdForPrompt}'). Consider keywords like 'urgent', 'action needed', 'deadline', 'blocker', 'ping', 'help', direct questions, or tasks assigned.
+  const llmPrompt = `You are an assistant helping filter Discord server messages. Analyze the following message sent by '${senderName}' in the channel '#${channelIdForContext}' on server '${serverName}'. Determine if this message requires the urgent attention or action of the user mentioned ('${targetUsernameOrIdForPrompt}'). Consider keywords like 'urgent', 'action needed', 'deadline', 'blocker', 'ping', 'help', direct questions, or tasks assigned.
 
 Respond ONLY with a JSON object matching this schema:
 {
@@ -375,7 +409,6 @@ Message Text:
       text: messageText,
       senderName,
       serverName,
-      channelName,
       messageLink: messageUrl, // The direct URL to the Discord message
       originalDiscordMessageId: originalDiscordMessageIdFromUrl,
     };
