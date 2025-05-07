@@ -16,7 +16,6 @@ interface DiscordNotificationData {
   text: string | undefined; // Message content
   senderName: string; // Sender's name
   serverName: string; // Discord server name
-  channelName: string; // Discord channel name
   messageLink: string; // Direct URL to the Discord message
   originalDiscordMessageId: string; // ID of the original Discord message
 }
@@ -39,8 +38,10 @@ export async function sendPrivateNotification(
       agentId: runtime.agentId,
       originalDiscordMessageId: originalDiscordMessageId,
       reason: reason,
+      // Log the received server and channel names for debugging
+      receivedServerName: notificationDetails.serverName,
     },
-    "[PingPal Discord] Preparing to send private notification via Telegram..."
+    "[PingPal Discord] Preparing to send private notification via Telegram. Received details logged."
   );
 
   try {
@@ -80,9 +81,6 @@ export async function sendPrivateNotification(
     const serverName = escapeMarkdownV2(
       notificationDetails.serverName || "Unknown Server"
     );
-    const channelName = escapeMarkdownV2(
-      notificationDetails.channelName || "Unknown Channel"
-    );
     const originalText = escapeMarkdownV2(
       notificationDetails.text || "No message content"
     );
@@ -92,20 +90,7 @@ export async function sendPrivateNotification(
     // 4. Format Notification Message (MarkdownV2)
     // Using a clear, structured format for the notification.
     // [Link Text](URL) is the MarkdownV2 format for links.
-    const notificationText = `*🔔 PingPal Alert: Important Discord Mention*
-
-*From:* ${senderName}
-*Server:* ${serverName}
-*Channel:* \\#${channelName}
-
-*Reason:* ${escapedReason}
-
-*Original Message:*
-\`\`\`
-${originalText}
-\`\`\`
-
-[Link to Discord Message](${messageLink})`;
+    const notificationText = `*🔔 PingPal Alert: Important Discord Mention*\n\n*From:* ${senderName}\n*Server:* ${serverName}\n\n*Reason:* ${escapedReason}\n\n*Original Message:*\n\`\`\`\n${originalText}\n\`\`\`\n\n[Link to Discord Message](${messageLink})`;
 
     // 5. Send Message
     logger.debug(
