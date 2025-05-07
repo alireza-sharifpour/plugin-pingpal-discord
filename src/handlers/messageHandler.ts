@@ -7,6 +7,7 @@ import type {
   Content, // Base Room type from ElizaOS core
 } from "@elizaos/core";
 import { logger, ModelType, parseJSONObjectFromText } from "@elizaos/core";
+import { sendPrivateNotification } from "./notificationHandler";
 
 // --- Interface Definitions based on provided logs ---
 
@@ -378,11 +379,11 @@ Message Text:
       messageLink: messageUrl, // The direct URL to the Discord message
       originalDiscordMessageId: originalDiscordMessageIdFromUrl,
     };
-    // await sendPrivateNotificationViaTelegram(
-    //   runtime,
-    //   notificationData,
-    //   analysisResult.reason
-    // );
+    await sendPrivateNotification(
+      runtime,
+      notificationData,
+      analysisResult.reason
+    );
   } else {
     logger.info(
       {
