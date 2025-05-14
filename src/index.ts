@@ -4,12 +4,6 @@ import { logger, EventType } from "@elizaos/core";
 import { handleDiscordMessage } from "./handlers/messageHandler"; // <--- Placeholder Import
 import { z } from "zod";
 
-/**
- * Defines an *example* configuration schema. Adapt this if your plugin needs specific config.
- * Currently, it mirrors the structure from the telegram example for consistency.
- * Refer to your PRD for actual configuration needed (targetDiscordUserId, targetTelegramUserId).
- * These specific PingPal settings are typically accessed via `runtime.getSetting()`.
- */
 const configSchema = z.object({
   EXAMPLE_PLUGIN_VARIABLE_DISCORD: z // Renamed slightly for clarity, but still just an example
     .string()
@@ -24,12 +18,6 @@ const configSchema = z.object({
       return val;
     }),
 });
-
-/**
- * Placeholder for action definitions.
- * According to the PRD, actions like ANALYZE_DISCORD_MENTION and SEND_TELEGRAM_NOTIFICATION
- * would be defined elsewhere and added to the 'actions' array below.
- */
 
 const pingPalDiscordPlugin: Plugin = {
   name: "plugin-pingpal-discord",
