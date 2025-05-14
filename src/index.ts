@@ -37,7 +37,6 @@ const pingPalDiscordPlugin: Plugin = {
     "Monitors Discord mentions for a target user and sends important notifications via Telegram.",
   init: async (config: Record<string, string>, runtime: IAgentRuntime) => {
     console.log("Initializing PingPal Discord Plugin...");
-
     // Register the handler for messages received *from* the Discord service plugin
     // The ElizaOS runtime routes MESSAGE_RECEIVED events based on their source.
     // This handler will receive messages that originate from Discord.
@@ -47,20 +46,9 @@ const pingPalDiscordPlugin: Plugin = {
     // Add any other initialization logic here if needed
     // e.g., validating required settings from runtime.getSetting()
   },
-  actions: [
-    /* Actions like ANALYZE_DISCORD_MENTION, SEND_TELEGRAM_NOTIFICATION will be added here */
-    /* Example: import { analyzeDiscordMentionAction } from './actions/analyze'; */
-    /* Example: actions: [analyzeDiscordMentionAction, ...], */
-  ],
-  providers: [
-    // Add any custom providers needed by this plugin
-  ],
-  evaluators: [
-    // Add any custom evaluators needed by this plugin
-  ],
-  // Note: Service plugins like @elizaos/plugin-discord and @elizaos/plugin-telegram
-  // are added as dependencies in package.json and listed in the agent's character definition,
-  // not typically within the 'services' array of *this* custom logic plugin.
+  actions: [],
+  providers: [],
+  evaluators: [],
 };
 
 export default pingPalDiscordPlugin;
