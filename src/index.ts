@@ -24,7 +24,7 @@ const pingPalDiscordPlugin: Plugin = {
   description:
     "Monitors Discord mentions for a target user and sends important notifications via Telegram.",
   init: async (config: Record<string, string>, runtime: IAgentRuntime) => {
-    console.log("Initializing PingPal Discord Plugin...");
+    console.log("Initializing PingPal Discord Plugin....");
     // Register the handler for messages received *from* the Discord service plugin
     // The ElizaOS runtime routes MESSAGE_RECEIVED events based on their source.
     // This handler will receive messages that originate from Discord.
