@@ -61,7 +61,7 @@ export async function sendPrivateNotification(
 
     // 2. Get Target User ID (from a general PingPal setting, not Discord specific)
     const targetUserId =
-      runtime.getSetting("pingpal.targetUserId") ||
+      runtime.getSetting("pingpal.targetTelegramUserId") ||
       process.env.PINGPAL_TARGET_TELEGRAM_USERID; // Ensure you have a fallback or clear config for this
     if (!targetUserId) {
       logger.error(
@@ -147,7 +147,7 @@ export async function sendPrivateNotification(
             : sendError,
         agentId: runtime.agentId,
         targetUserId:
-          runtime.getSetting("pingpal.targetUserId") ||
+          runtime.getSetting("pingpal.targetTelegramUserId") ||
           process.env.PINGPAL_TARGET_TELEGRAM_USERID,
         originalDiscordMessageId: originalDiscordMessageId,
       },

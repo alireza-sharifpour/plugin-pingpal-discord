@@ -233,7 +233,7 @@ async function performDiscordMentionAnalysis(
 
   const messageText = discordMessage.content?.text || "";
   const targetDiscordUserId =
-    runtime.getSetting("pingpal_discord.targetDiscordUserId") ||
+    runtime.getSetting("pingpal.targetDiscordUserId") ||
     process.env.PINGPAL_TARGET_DISCORD_USERID;
   const targetUsernameOrIdForPrompt = targetDiscordUserId
     ? `(@${targetDiscordUserId})`
@@ -449,7 +449,7 @@ export async function handleDiscordMessage(eventPayload: {
   );
 
   const targetDiscordUserId =
-    runtime.getSetting("pingpal_discord.targetDiscordUserId") ||
+    runtime.getSetting("pingpal.targetDiscordUserId") ||
     PINGPAL_TARGET_DISCORD_USERID;
   if (!targetDiscordUserId) {
     logger.warn(

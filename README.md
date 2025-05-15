@@ -135,7 +135,7 @@ export const character: Character = {
       OPENAI_API_KEY: process.env.OPENAI_API_KEY, // Or ANTHROPIC_API_KEY, etc.
     },
     // Plugin-specific settings
-    pingpal_discord: {
+    pingpal: {
       // You can set these here or use the environment variables PINGPAL_TARGET_DISCORD_USERID
       // and PINGPAL_TARGET_TELEGRAM_USERID. Settings here override .env if both are present.
       targetDiscordUserId:
@@ -225,7 +225,7 @@ bun run test
 
 The `agentConfig` section in this plugin's `package.json` can define parameters for discovery in the ElizaOS plugin registry. For this plugin, the core configurable items are primarily handled through agent `settings` and `secrets`.
 
-Example relevant settings that a user might configure for this plugin's behavior (which are read via `runtime.getSetting("pingpal_discord.targetDiscordUserId")` etc.):
+Example relevant settings that a user might configure for this plugin's behavior (which are read via `runtime.getSetting("pingpal.targetDiscordUserId")` etc.):
 
 ```json
 "agentConfig": {
