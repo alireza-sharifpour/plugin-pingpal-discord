@@ -35,6 +35,7 @@ This project is designed as a **standalone ElizaOS agent** dedicated to this mon
 
 - Node.js (version specified in ElizaOS documentation, e.g., 23.3.0+) or Bun.
 - ElizaOS CLI installed (`npm install -g @elizaos/cli` or `bun install -g @elizaos/cli`).
+- Ensure you have installed the core ElizaOS plugins that this project depends on: `@elizaos/plugin-discord` and `@elizaos/plugin-telegram`. You can typically install them in your ElizaOS project using `bun install @elizaos/plugin-discord @elizaos/plugin-telegram`.
 - An existing ElizaOS project or create a new one (`npx elizaos create`).
 
 ### 1. Environment Variables
