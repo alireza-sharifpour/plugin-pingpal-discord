@@ -435,7 +435,7 @@ export async function handleDiscordMessage(eventPayload: {
   message: IncomingDiscordMemory;
 }): Promise<void> {
   const { runtime, message: discordMessage } = eventPayload;
-
+  if (discordMessage.content.source !== "discord") return;
   logger.debug(
     {
       agentId: runtime.agentId,
